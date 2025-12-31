@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Methodology &mdash; Agnirodhak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="page-root">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-logo">&#9889;</span>
+          <div class="brand-text">
+            <h1>Agnirodhak</h1>
+            <p>Uttarakhand Forest Fire Early Warning</p>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/">Dashboard</a>
+          <a href="/about">About</a>
+          <a href="/methodology">Methodology</a>
+        </nav>
+
+        <div class="header-badge">Methods Overview</div>
+      </header>
+
+      <main class="panel" style="margin-top: 8px;">
+        <h2>Data &amp; Features</h2>
+        <p class="panel-subtitle" style="margin-bottom: 10px;">
+          Daily stacks are exported from Google Earth Engine as multi-band
+          GeoTIFFs with the following bands (in order):
+        </p>
+        <ul class="hint" style="margin-left: 18px; list-style: disc;">
+          <li>TempC, U10, V10, WindSpeed</li>
+          <li>NDVI</li>
+          <li>BurnDate (used to derive current burn mask)</li>
+          <li>LULC, DEM, Slope, Aspect, Hillshade</li>
+        </ul>
+
+        <h2 style="margin-top: 18px;">Models</h2>
+        <ul class="hint" style="margin-left: 18px; list-style: disc;">
+          <li>
+            <strong>Random Forest (ANY_BURN)</strong> on tabularized pixel
+            samples with lagged dynamic features and static context.
+          </li>
+          <li>
+            <strong>U-Net Scenario 1</strong> (operational model): predicts
+            next-day burn probability from a single-day stack using
+            128&times;128 patches.
+          </li>
+          <li>
+            Additional experiments with multi-day U-Net scenarios and
+            ConvLSTM sequences.
+          </li>
+        </ul>
+
+        <h2 style="margin-top: 18px;">Training &amp; Evaluation</h2>
+        <ul class="hint" style="margin-left: 18px; list-style: disc;">
+          <li>Class imbalance handled via negative downsampling.</li>
+          <li>
+            Decision thresholds chosen by maximizing G-mean / F1 on a held-out
+            test set.
+          </li>
+          <li>
+            Metrics include ROC AUC, PR AUC, sensitivity, specificity,
+            precision, and CBA.
+          </li>
+        </ul>
+
+        <p class="hint" style="margin-top: 16px;">
+          For full experimental details, hyperparameters, and additional
+          figures, see the Model.ipynb notebook in the repository.
+        </p>
+      </main>
+
+      <footer class="app-footer">
+        <span>Agnirodhak &mdash; see repository README for full details</span>
+      </footer>
+    </div>
+  </body>
+</html>

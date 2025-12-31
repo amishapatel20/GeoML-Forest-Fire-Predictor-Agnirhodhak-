@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About &mdash; Agnirodhak</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="page-root">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-logo">&#9889;</span>
+          <div class="brand-text">
+            <h1>Agnirodhak</h1>
+            <p>Uttarakhand Forest Fire Early Warning</p>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/">Dashboard</a>
+          <a href="/about">About</a>
+          <a href="/methodology">Methodology</a>
+        </nav>
+
+        <div class="header-badge">Research Prototype</div>
+      </header>
+
+      <main class="panel" style="margin-top: 8px;">
+        <h2>About the Project</h2>
+        <p class="panel-subtitle" style="margin-bottom: 14px;">
+          Agnirodhak is a research-focused early warning system that estimates
+          short-term forest fire risk for Uttarakhand using daily remote sensing
+          and reanalysis data.
+        </p>
+
+        <p class="hint" style="margin-bottom: 10px;">
+          The project combines stacked GeoTIFF inputs (temperature, wind,
+          NDVI, land cover, terrain) with machine learning models to produce
+          next-day burn probability maps at the pixel level.
+        </p>
+
+        <ul class="hint" style="margin-left: 18px; list-style: disc;">
+          <li>Study region: Uttarakhand, Himalayan foothills.</li>
+          <li>
+            Data sources: ERA5 (meteorology), MODIS (NDVI, burned area),
+            ESA WorldCover (LULC), SRTM (DEM / terrain).
+          </li>
+          <li>
+            Models explored: Random Forest baseline, multiple U-Net variants,
+            and ConvLSTM temporal models.
+          </li>
+          <li>
+            Operational model: U-Net Scenario 1 (predicting next-day burn risk
+            from a single-day stack).
+          </li>
+        </ul>
+
+        <p class="hint" style="margin-top: 16px;">
+          This web interface is meant for visualization and outreach. It should
+          not be used as the sole basis for operational firefighting decisions
+          without additional validation and expert review.
+        </p>
+      </main>
+
+      <footer class="app-footer">
+        <span>Agnirodhak &mdash; academic / research use only</span>
+      </footer>
+    </div>
+  </body>
+</html>

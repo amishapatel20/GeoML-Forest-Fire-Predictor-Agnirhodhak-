@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agnirodhak &mdash; Uttarakhand Fire Risk Forecast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="page-root">
+      <header class="app-header">
+        <div class="brand">
+          <span class="brand-logo">&#9889;</span>
+          <div class="brand-text">
+            <h1>Agnirodhak</h1>
+            <p>Uttarakhand Forest Fire Early Warning</p>
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/">Dashboard</a>
+          <a href="/about">About</a>
+          <a href="/methodology">Methodology</a>
+        </nav>
+
+        <div class="header-badge">Powered by U-Net (Scenario&nbsp;1)</div>
+      </header>
+
+      <main class="layout">
+        <section class="panel panel-left">
+          <h2>Forecast Controls</h2>
+          <p class="panel-subtitle">
+            Select a date (with available stack data) or use the
+            <strong>latest</strong> stack to estimate next-day fire risk for
+            Uttarakhand.
+          </p>
+
+          <form id="control-form" class="control-form">
+            <label class="field-label" for="date-input">Forecast date</label>
+            <div class="date-row">
+              <input
+                id="date-input"
+                class="date-input"
+                type="date"
+                autocomplete="off"
+              />
+              <label class="toggle">
+                <input id="latest-toggle" type="checkbox" checked />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label">Use latest</span>
+              </label>
+            </div>
+
+            <button type="submit" class="primary-btn">
+              Predict Fire Risk
+            </button>
+
+            <p class="hint">
+              Note: the model was trained on 2016 data but uses only
+              <em>physical features</em> (temperature, wind, NDVI, terrain,
+              LULC), so it can be applied to later years as long as the input
+              stacks follow the same format.
+            </p>
+          </form>
+
+          <div class="status" id="status-text">Waiting for prediction&hellip;</div>
+        </section>
+
+        <section class="panel panel-right">
+          <div class="map-header">
+            <h2>Fire Risk Map</h2>
+            <span id="date-label" class="date-label">No forecast yet</span>
+          </div>
+
+          <div class="map-container">
+            <div id="spinner" class="spinner hidden"></div>
+            <img
+              id="map-image"
+              class="map-image hidden"
+              alt="Fire risk map"
+            />
+          </div>
+
+          <div class="legend">
+            <div class="legend-item">
+              <span class="legend-swatch swatch-low"></span>
+              <span>Low risk</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch swatch-med"></span>
+              <span>Moderate risk</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch swatch-high"></span>
+              <span>High risk</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span>Uttarakhand region, daily ERA5 &amp; MODIS features</span>
+        <span>&middot;</span>
+        <span>Agnirodhak &mdash; research prototype</span>
+      </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

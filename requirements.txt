@@ -1,0 +1,14 @@
+earthengine-api
+numpy
+geemap
+rasterio
+scikit-learn
+scipy
+matplotlib
+imageio
+torch
+torchvision
+torchaudio
+tensorflow
+fastapi
+uvicorn[standard]
