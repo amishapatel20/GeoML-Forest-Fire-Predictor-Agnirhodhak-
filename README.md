@@ -215,3 +215,14 @@ fire‑spread risk.
 For research or SDE/ML internship applications, you can point to both
 the modeling notebook and the deployed backend to showcase
 end‑to‑end skills.
+
+
+---
+
+## 👩‍💻 Author & Maintainer
+
+**Amisha Patel**  
+Int.Msc Mathematics | AI / GeoML Research  
+NIT Rourkela, India  
+
+GitHub: https://github.com/amishapatel20
