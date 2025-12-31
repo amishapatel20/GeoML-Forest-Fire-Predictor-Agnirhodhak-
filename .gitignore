@@ -1,5 +1,6 @@
 venv/
 daily_stacks/
+!daily_stacks/*.tif
 daily_bands/
 future_forecasts/
 models/*.joblib
