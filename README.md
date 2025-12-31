@@ -13,8 +13,7 @@ dashboard rather than a raw notebook demo.
 
 ## 🔗 Live Demo
 
-- **Backend API (FastAPI)** – main deployed service:  
-  https://geoml-forest-fire-predictor-agnirhodhak-1.onrender.com
+- https://geoml-forest-fire-predictor-agnirhodhak-2.onrender.com
 
 
 ---
