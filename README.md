@@ -4,8 +4,7 @@ Agnirodhak is a forest‑fire early‑warning dashboard for Uttarakhand.
 It combines a U‑Net segmentation model (next‑day burn probability) with a
 FastAPI backend and a modern web UI so that scientists, administrators,
 and citizens can explore where fire risk is higher on a given day.
-
-![Uploading amishapatel20_GeoML-Forest-Fire-Predictor-Agnirhodhak- - Google Chrome 31-12-2025 17_05_20.png…]()
+![Agnirhodhak Dashboard](images/dashboard.png)
 
 
 The project is intended as a **full‑stack portfolio piece**: it
