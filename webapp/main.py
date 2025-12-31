@@ -334,6 +334,72 @@ async def api_predict(date: str | None = Query(default="latest")) -> JSONRespons
         date_str=resolved_date,
     )
 
+    # Summaries to help non-technical users interpret the map
+    total_pixels = int(risk_mask.size)
+    if total_pixels:
+        # Use model probability field to derive three bands
+        # High: prob >= best_thr_u (already used for risk_mask)
+        # Moderate: 0.3 <= prob < best_thr_u
+        # Low: prob < 0.3
+        # These thresholds are heuristic but give an intuitive split
+        _, best_thr_u = load_unet_model()
+        high_mask = prob_full >= best_thr_u
+        moderate_mask = (prob_full >= 0.3) & (prob_full < best_thr_u)
+        low_mask = prob_full < 0.3
+
+        high_pixels = int(high_mask.sum())
+        moderate_pixels = int(moderate_mask.sum())
+        low_pixels = int(low_mask.sum())
+
+        # Normalise to fractions that sum to ~1.0
+        denom = float(high_pixels + moderate_pixels + low_pixels) or float(total_pixels)
+        high_fraction = float(high_pixels / denom)
+        moderate_fraction = float(moderate_pixels / denom)
+        low_fraction = float(low_pixels / denom)
+    else:
+        high_pixels = 0
+        high_fraction = 0.0
+        moderate_fraction = 0.0
+        low_fraction = 0.0
+
+    # Approximate focus area label with Uttarakhand-style region names.
+    # This is heuristic (based on the grid), not an exact district lookup.
+    focus_label = "No high-risk pixels detected"
+    ys, xs = np.where(risk_mask == 1)
+    if ys.size > 0:
+        cy = float(ys.mean())
+        cx = float(xs.mean())
+        H, W = risk_mask.shape
+
+        # Map center-of-mass into 3x3 bands (row_band, col_band)
+        row_band = 1
+        col_band = 1
+        if cy < H / 3:
+            row_band = 0
+        elif cy > 2 * H / 3:
+            row_band = 2
+        if cx < W / 3:
+            col_band = 0
+        elif cx > 2 * W / 3:
+            col_band = 2
+
+        region_names = {
+            # row 0 = northern high ranges
+            (0, 0): "north‑west high ranges (around Uttarkashi belt)",
+            (0, 1): "upper Garhwal (Chamoli–Uttarkashi belt)",
+            (0, 2): "north‑east high ranges (towards Pithoragarh)",
+            # row 1 = central hill districts
+            (1, 0): "western Garhwal (Dehradun–Tehri side)",
+            (1, 1): "central Garhwal (around Tehri–Pauri belt)",
+            (1, 2): "eastern Kumaon (Almora–Pithoragarh belt)",
+            # row 2 = southern Shivalik / Terai
+            (2, 0): "south‑west Shivalik foothills", 
+            (2, 1): "central Shivalik belt", 
+            (2, 2): "south‑east Terai forests",
+        }
+
+        focus_label = region_names.get((row_band, col_band), "central Uttarakhand")
+
     prob_url = "/forecasts/" + os.path.basename(prob_png)
     overlay_url = "/forecasts/" + os.path.basename(overlay_png) if overlay_png else ""
 
@@ -343,6 +409,10 @@ async def api_predict(date: str | None = Query(default="latest")) -> JSONRespons
             "stack_path": stack_path,
             "probability_png": prob_url,
             "overlay_png": overlay_url,
+            "high_risk_fraction": high_fraction,
+            "moderate_risk_fraction": moderate_fraction,
+            "low_risk_fraction": low_fraction,
+            "high_risk_focus": focus_label,
         }
     )
 
@@ -350,4 +420,7 @@ async def api_predict(date: str | None = Query(default="latest")) -> JSONRespons
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # On platforms like Render, the port is provided via the PORT
+    # environment variable. Fall back to 8000 for local runs.
+    port = int(os.environ.get("PORT", "8000"))
+    uvicorn.run(app, host="0.0.0.0", port=port)

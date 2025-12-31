@@ -6,6 +6,8 @@ const spinner = document.getElementById("spinner");
 const mapImage = document.getElementById("map-image");
 const dateLabel = document.getElementById("date-label");
 
+let availableDates = [];
+
 function setLoading(isLoading) {
   if (isLoading) {
     spinner.classList.remove("hidden");
@@ -68,10 +70,33 @@ form.addEventListener("submit", async (e) => {
   } catch (err) {
     console.error(err);
     setLoading(false);
-    statusText.textContent = `Error: ${err.message}`;
+    statusText.textContent = `Error from server: ${err.message}`;
   }
 });
 
-// Initialize state
-latestToggle.dispatchEvent(new Event("change"));
-statusText.textContent = "Waiting for prediction…";
+async function initializePage() {
+  latestToggle.dispatchEvent(new Event("change"));
+
+  try {
+    const resp = await fetch("/api/available-dates");
+    if (!resp.ok) {
+      throw new Error(`status ${resp.status}`);
+    }
+    const dates = await resp.json();
+    if (Array.isArray(dates) && dates.length) {
+      availableDates = dates.sort();
+      const first = availableDates[0];
+      const last = availableDates[availableDates.length - 1];
+      dateInput.min = first;
+      dateInput.max = last;
+      statusText.textContent = `Ready. Data available from ${first} to ${last}.`;
+    } else {
+      statusText.textContent = "No input stacks are available on the server.";
+    }
+  } catch (err) {
+    console.error("Failed to load available dates", err);
+    statusText.textContent = "Unable to load available dates from server. You can still try 'Use latest'.";
+  }
+}
+
+initializePage();
