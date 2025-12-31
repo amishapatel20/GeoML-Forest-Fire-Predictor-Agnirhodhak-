@@ -16,9 +16,6 @@ dashboard rather than a raw notebook demo.
 - **Backend API (FastAPI)** – main deployed service:  
   https://geoml-forest-fire-predictor-agnirhodhak-1.onrender.com
 
-> Note: The free backend instance on Render has limited memory. Running
-> full U‑Net predictions may occasionally be slow or restart the service.
-> For a smooth demo, you can also run the backend locally.
 
 ---
 
